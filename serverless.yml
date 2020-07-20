@@ -1,4 +1,4 @@
-# NOTE: update this with your service name
+# cloudformation stack name
 service: notes-app-api
 
 # Create an optimized package for our functions
