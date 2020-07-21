@@ -1,0 +1,23 @@
+DynameDB table: notes
+S3 bucket: propist-notes
+
+Cognito user pool: notes-user-pool
+Pool Id: us-east-1_7K7CwE31I
+Pool ARN: arn:aws:cognito-idp:us-east-1:644649868276:userpool/us-east-1_7K7CwE31I
+App client ID: 6i2dqn4uc8rtu25g9vouraefkb
+
+Amazon Cognito domain
+https://propist-notes.auth.us-east-1.amazoncognito.com
+
+aws cognito-idp sign-up \
+  --region us-east-1 \
+  --client-id 6i2dqn4uc8rtu25g9vouraefkb \
+  --username stivlo@gmail.com \
+  --password Passw0rd!
+
+aws cognito-idp admin-confirm-sign-up \
+  --region us-east-1 \
+  --user-pool-id us-east-1_7K7CwE31I \
+  --username admin@example.com
+
+
