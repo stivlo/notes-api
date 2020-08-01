@@ -1,10 +1,13 @@
 DynameDB table: notes
 S3 bucket: propist-notes
 
-Cognito user pool: notes-user-pool
-Pool Id: us-east-1_7K7CwE31I
+Cognito User pool: notes-user-pool
+User Pool Id: us-east-1_7K7CwE31I
 Pool ARN: arn:aws:cognito-idp:us-east-1:644649868276:userpool/us-east-1_7K7CwE31I
 App client ID: 6i2dqn4uc8rtu25g9vouraefkb
+Identity Pool ID: us-east-1:a5b2b5aa-8ed6-43c8-9874-c024c019412c
+arn:aws:cognito-identity:us-east-1:644649868276:identitypool/us-east-1:a5b2b5aa-8ed6-43c8-9874-c024c019412c
+
 
 Amazon Cognito domain
 https://propist-notes.auth.us-east-1.amazoncognito.com
@@ -19,5 +22,51 @@ aws cognito-idp admin-confirm-sign-up \
   --region us-east-1 \
   --user-pool-id us-east-1_7K7CwE31I \
   --username admin@example.com
+
+
+AWS_PROFILE=propist_prod serverless invoke local --function create --path mocks/create-event.json
+
+AWS_PROFILE=propist_prod serverless invoke local --function get --path mocks/get-event.json
+
+AWS_PROFILE=propist_prod serverless invoke local --function list --path mocks/list-event.json
+
+AWS_PROFILE=propist_prod serverless invoke local --function update --path mocks/update-event.json
+
+AWS_PROFILE=propist_prod serverless invoke local --function delete --path mocks/delete-event.json
+
+AWS_PROFILE=propist_prod serverless invoke local --function billing --path mocks/billing-event.json
+
+serverless deploy --aws-profile propist_prod
+
+region: us-east-1
+
+endpoints:
+  POST - https://8c2n9z6mng.execute-api.us-east-1.amazonaws.com/prod/notes
+  GET - https://8c2n9z6mng.execute-api.us-east-1.amazonaws.com/prod/notes/{id}
+  GET - https://8c2n9z6mng.execute-api.us-east-1.amazonaws.com/prod/notes
+  PUT - https://8c2n9z6mng.execute-api.us-east-1.amazonaws.com/prod/notes/{id}
+  DELETE - https://8c2n9z6mng.execute-api.us-east-1.amazonaws.com/prod/notes/{id}
+  POST - https://8c2n9z6mng.execute-api.us-east-1.amazonaws.com/prod/billing
+
+ serverless deploy function -f list --aws-profile propist_prod
+
+
+Test an endpoint:
+
+
+npx aws-api-gateway-cli-test \
+--username='stivlo@gmail.com' \
+--password='Passw0rd!' \
+--user-pool-id='us-east-1_7K7CwE31I' \
+--app-client-id='6i2dqn4uc8rtu25g9vouraefkb' \
+--cognito-region='us-east-1' \
+--identity-pool-id='us-east-1:a5b2b5aa-8ed6-43c8-9874-c024c019412c' \
+--invoke-url='https://8c2n9z6mng.execute-api.us-east-1.amazonaws.com/prod' \
+--api-gateway-region='us-east-1' \
+--path-template='/notes' \
+--method='POST' \
+--body='{"content":"hello world","attachment":"hello.jpg"}'
+
+
 
 
